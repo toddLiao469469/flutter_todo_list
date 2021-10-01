@@ -54,36 +54,38 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Todo List',
-            ),
-            TextField(
-              onChanged: (input) {
-                _handleTextFieldChange(input);
-              },
-              onSubmitted: (_) {
-                _handleAddNewTodo();
-              },
-              controller: _textEditingController,
-            ),
-            Text(
-              '目前的Todo:',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            ..._todoList.map(
-              (todo) => TodoCard(todoContent: todo),
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 300,
+                child: TextField(
+                  decoration: const InputDecoration(labelText: '待辦事項'),
+                  onChanged: (input) {
+                    _handleTextFieldChange(input);
+                  },
+                  onSubmitted: (_) {
+                    _handleAddNewTodo();
+                  },
+                  controller: _textEditingController,
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Text(
+                '目前的Todo:',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              ..._todoList.asMap().entries.map(
+                    (entity) =>
+                        TodoCard(todoContent: entity.value, index: entity.key),
+                  ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _handleAddNewTodo,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
