@@ -30,20 +30,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _todoInput = '';
   List<String> _todoList = ['123'];
   final TextEditingController _textEditingController = TextEditingController();
 
-  void _handleTextFieldChange(String input) {
+  void _handleAddNewTodo(String input) {
     setState(() {
-      _todoInput = input;
-    });
-  }
-
-  void _handleAddNewTodo() {
-    setState(() {
-      _todoList = [..._todoList, _todoInput];
-      _todoInput = '';
+      _todoList = [..._todoList, input];
       _textEditingController.text = '';
     });
   }
@@ -59,15 +51,15 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              const SizedBox(
+                height: 40,
+              ),
               SizedBox(
                 width: 300,
                 child: TextField(
                   decoration: const InputDecoration(labelText: '待辦事項'),
-                  onChanged: (input) {
-                    _handleTextFieldChange(input);
-                  },
-                  onSubmitted: (_) {
-                    _handleAddNewTodo();
+                  onSubmitted: (input) {
+                    _handleAddNewTodo(input);
                   },
                   controller: _textEditingController,
                 ),
@@ -77,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 '目前的Todo:',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headline5,
               ),
               ..._todoList.asMap().entries.map(
                     (entity) =>
