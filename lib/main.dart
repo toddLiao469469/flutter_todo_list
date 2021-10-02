@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/view/todo_card.dart';
 
+import 'model/todo_model.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -30,13 +32,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> _todoList = ['123'];
+  List<TodoModel> _todoList = [TodoModel(content: '123')];
   final TextEditingController _textEditingController = TextEditingController();
 
   void _handleAddNewTodo(String input) {
     setState(() {
-      _todoList = [..._todoList, input];
+      _todoList = [..._todoList, TodoModel(content: input)];
       _textEditingController.text = '';
+    });
+  }
+
+  void _handleRemoveTodo(int hashCode) {
+    setState(() {
+      _todoList =
+          _todoList.takeWhile((value) => value.hashCode != hashCode).toList();
     });
   }
 
@@ -72,8 +81,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: Theme.of(context).textTheme.headline5,
               ),
               ..._todoList.asMap().entries.map(
-                    (entity) =>
-                        TodoCard(todoContent: entity.value, index: entity.key),
+                    (entity) => Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TodoCard(
+                          todoContent: entity.value.content,
+                          index: entity.key,
+                        ),
+                        GestureDetector(
+                          child: const Icon(Icons.remove),
+                          onTap: () {
+                            _handleRemoveTodo(entity.value.hashCode);
+                          },
+                        )
+                      ],
+                    ),
                   ),
             ],
           ),
