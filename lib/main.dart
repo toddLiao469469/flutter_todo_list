@@ -46,19 +46,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _handleRemoveTodo(int hashCode) {
     setState(() {
-      _todoList =
-          _todoList.where((value) => value.hashCode != hashCode).toList();
+      _todoList = _todoList.where((todo) => todo.hashCode != hashCode).toList();
     });
   }
 
   void _handleToggleStatus(int hashCode) {
     setState(() {
-      _todoList = _todoList.map((value) {
-        if (value.hashCode == hashCode) {
-          value.toggleStatus();
-          return value;
+      _todoList = _todoList.map((todo) {
+        if (todo.hashCode == hashCode) {
+          todo.toggleStatus();
+          return todo;
         } else {
-          return value;
+          return todo;
         }
       }).toList();
     });
@@ -87,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 width: 300,
                 child: TextField(
-                  decoration: const InputDecoration(labelText: '待辦事項'),
+                  decoration: InputDecoration(labelText: '待辦事項'),
                   onSubmitted: (input) {
                     _handleAddNewTodo(input);
                   },
@@ -98,14 +97,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 40,
               ),
               Text(
-                '目前的Todo:',
+                '目前' + (_todoFilter.isDone ? '已完成' : '未完成') + '的Todo:',
                 style: Theme.of(context).textTheme.headline5,
               ),
               GestureDetector(
-                child: SizedBox(
-                  width: 60,
-                  height: 24,
-                  child: Text(_todoFilter.isDone ? '完成' : '未完成'),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 120,
+                    height: 36,
+                    child: const Text('切換完成狀態'),
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
                 ),
                 onTap: () {
                   _handleFilteTodoStatue();
