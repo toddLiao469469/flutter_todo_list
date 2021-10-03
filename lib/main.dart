@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/view/todo_card.dart';
+import 'package:todolist/view/todo_list_section.dart';
 
+import 'model/todo_filter_model.dart';
 import 'model/todo_model.dart';
 
 void main() {
@@ -34,7 +36,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<TodoModel> _todoList = [TodoModel(content: '123')];
   final TextEditingController _textEditingController = TextEditingController();
-
+  final TodoFliterModel _todoFilter = TodoFliterModel();
   void _handleAddNewTodo(String input) {
     setState(() {
       _todoList = [..._todoList, TodoModel(content: input)];
@@ -46,6 +48,25 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _todoList =
           _todoList.where((value) => value.hashCode != hashCode).toList();
+    });
+  }
+
+  void _handleToggleStatus(int hashCode) {
+    setState(() {
+      _todoList = _todoList.map((value) {
+        if (value.hashCode == hashCode) {
+          value.toggleStatus();
+          return value;
+        } else {
+          return value;
+        }
+      }).toList();
+    });
+  }
+
+  void _handleFilteTodoStatue() {
+    setState(() {
+      _todoFilter.isDone = !_todoFilter.isDone;
     });
   }
 
@@ -80,23 +101,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 '目前的Todo:',
                 style: Theme.of(context).textTheme.headline5,
               ),
-              ..._todoList.asMap().entries.map(
-                    (entity) => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TodoCard(
-                          todoContent: entity.value.content,
-                          index: entity.key,
-                        ),
-                        GestureDetector(
-                          child: const Icon(Icons.remove),
-                          onTap: () {
-                            _handleRemoveTodo(entity.value.hashCode);
-                          },
-                        )
-                      ],
-                    ),
-                  ),
+              GestureDetector(
+                child: SizedBox(
+                  width: 60,
+                  height: 24,
+                  child: Text(_todoFilter.isDone ? '完成' : '未完成'),
+                ),
+                onTap: () {
+                  _handleFilteTodoStatue();
+                },
+              ),
+              TodoListSection(
+                todoList: _todoList,
+                todoFilter: _todoFilter,
+                handleRemoveTodo: _handleRemoveTodo,
+                handleToggleStatus: _handleToggleStatus,
+              )
             ],
           ),
         ),
