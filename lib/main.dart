@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _handleRemoveTodo(int hashCode) {
     setState(() {
       _todoList =
-          _todoList.takeWhile((value) => value.hashCode != hashCode).toList();
+          _todoList.where((value) => value.hashCode != hashCode).toList();
     });
   }
 
