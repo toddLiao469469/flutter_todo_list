@@ -4,6 +4,7 @@ import 'package:todolist/view/todo_list_section.dart';
 
 import 'model/todo_filter_model.dart';
 import 'model/todo_model.dart';
+import 'viewModel/todo_view_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,33 +35,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<TodoModel> _todoList = [TodoModel(content: '123')];
+  // List<TodoModel> _todoList = [TodoModel(content: '123')];
+  final todoListViewModel = TodoViewModel();
   final TextEditingController _textEditingController = TextEditingController();
   final TodoFliterModel _todoFilter = TodoFliterModel();
   void _handleAddNewTodo(String input) {
-    setState(() {
-      _todoList = [..._todoList, TodoModel(content: input)];
-      _textEditingController.text = '';
-    });
+    todoListViewModel.addTodo(input);
+    _textEditingController.text = '';
   }
 
   void _handleRemoveTodo(int hashCode) {
-    setState(() {
-      _todoList = _todoList.where((todo) => todo.hashCode != hashCode).toList();
-    });
+    todoListViewModel.removeTodo(hashCode);
   }
 
   void _handleToggleStatus(int hashCode) {
-    setState(() {
-      _todoList = _todoList.map((todo) {
-        if (todo.hashCode == hashCode) {
-          todo.toggleStatus();
-          return todo;
-        } else {
-          return todo;
-        }
-      }).toList();
-    });
+    todoListViewModel.toggleStatus(hashCode);
   }
 
   void _handleFilteTodoStatue() {
@@ -119,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               TodoListSection(
-                todoList: _todoList,
+                todoList: todoListViewModel,
                 todoFilter: _todoFilter,
                 handleRemoveTodo: _handleRemoveTodo,
                 handleToggleStatus: _handleToggleStatus,
