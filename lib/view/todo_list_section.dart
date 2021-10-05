@@ -10,13 +10,13 @@ typedef HandleRemoveTodo = void Function(int hashcode);
 
 class TodoListSection extends StatelessWidget {
   const TodoListSection({
-    required this.todoList,
+    required this.todoViewModel,
     required this.todoFilter,
     required this.handleToggleStatus,
     required this.handleRemoveTodo,
     Key? key,
   }) : super(key: key);
-  final TodoViewModel todoList;
+  final TodoViewModel todoViewModel;
   final TodoFliterModel todoFilter;
   final HandleToggleStatus handleToggleStatus;
   final HandleRemoveTodo handleRemoveTodo;
@@ -26,7 +26,7 @@ class TodoListSection extends StatelessWidget {
       Observer(builder: (_) {
         return Column(
           children: [
-            ...todoList.todoList
+            ...todoViewModel.todoList
                 .where(
                   (element) => element.isDone == todoFilter.isDone,
                 )

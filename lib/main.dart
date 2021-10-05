@@ -35,21 +35,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // List<TodoModel> _todoList = [TodoModel(content: '123')];
-  final todoListViewModel = TodoViewModel();
   final TextEditingController _textEditingController = TextEditingController();
   final TodoFliterModel _todoFilter = TodoFliterModel();
+  final TodoViewModel todoViewModel = TodoViewModel();
   void _handleAddNewTodo(String input) {
-    todoListViewModel.addTodo(input);
+    todoViewModel.addTodo(input);
     _textEditingController.text = '';
   }
 
   void _handleRemoveTodo(int hashCode) {
-    todoListViewModel.removeTodo(hashCode);
+    todoViewModel.removeTodo(hashCode);
   }
 
   void _handleToggleStatus(int hashCode) {
-    todoListViewModel.toggleStatus(hashCode);
+    todoViewModel.toggleStatus(hashCode);
   }
 
   void _handleFilteTodoStatue() {
@@ -108,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               TodoListSection(
-                todoList: todoListViewModel,
+                todoViewModel: todoViewModel,
                 todoFilter: _todoFilter,
                 handleRemoveTodo: _handleRemoveTodo,
                 handleToggleStatus: _handleToggleStatus,

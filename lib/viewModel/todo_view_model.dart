@@ -1,10 +1,8 @@
 import 'package:mobx/mobx.dart';
 import 'package:todolist/model/todo_model.dart';
 
-// Include generated file
 part 'todo_view_model.g.dart';
 
-// This is the class used by rest of your codebase
 class TodoViewModel = _TodoViewModel with _$TodoViewModel;
 
 abstract class _TodoViewModel with Store {
