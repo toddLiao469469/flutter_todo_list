@@ -24,16 +24,12 @@ class TodoListSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       Observer(builder: (_) {
+        final _todoList = todoFilter.isDone
+            ? todoViewModel.completedTodos
+            : todoViewModel.pendingTodos;
         return Column(
           children: [
-            ...todoViewModel.todoList
-                .where(
-                  (element) => element.isDone == todoFilter.isDone,
-                )
-                .toList()
-                .asMap()
-                .entries
-                .map(
+            ..._todoList.asMap().entries.map(
                   (entity) => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

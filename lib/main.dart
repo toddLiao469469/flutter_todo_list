@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:todolist/view/todo_card.dart';
 import 'package:todolist/view/todo_list_section.dart';
 
@@ -84,10 +85,12 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(
                 height: 40,
               ),
-              Text(
-                '目前' + (_todoFilter.isDone ? '已完成' : '未完成') + '的Todo:',
-                style: Theme.of(context).textTheme.headline5,
-              ),
+              Observer(builder: (_) {
+                return Text(
+                  '目前' + (_todoFilter.isDone ? '已完成' : '未完成') + '的Todo：',
+                  style: Theme.of(context).textTheme.headline5,
+                );
+              }),
               GestureDetector(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

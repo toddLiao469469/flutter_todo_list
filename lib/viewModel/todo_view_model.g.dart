@@ -9,16 +9,31 @@ part of 'todo_view_model.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$TodoViewModel on _TodoViewModel, Store {
+  Computed<ObservableList<TodoModel>>? _$completedTodosComputed;
+
+  @override
+  ObservableList<TodoModel> get completedTodos => (_$completedTodosComputed ??=
+          Computed<ObservableList<TodoModel>>(() => super.completedTodos,
+              name: '_TodoViewModel.completedTodos'))
+      .value;
+  Computed<ObservableList<TodoModel>>? _$pendingTodosComputed;
+
+  @override
+  ObservableList<TodoModel> get pendingTodos => (_$pendingTodosComputed ??=
+          Computed<ObservableList<TodoModel>>(() => super.pendingTodos,
+              name: '_TodoViewModel.pendingTodos'))
+      .value;
+
   final _$todoListAtom = Atom(name: '_TodoViewModel.todoList');
 
   @override
-  List<TodoModel> get todoList {
+  ObservableList<TodoModel> get todoList {
     _$todoListAtom.reportRead();
     return super.todoList;
   }
 
   @override
-  set todoList(List<TodoModel> value) {
+  set todoList(ObservableList<TodoModel> value) {
     _$todoListAtom.reportWrite(value, super.todoList, () {
       super.todoList = value;
     });
@@ -63,7 +78,9 @@ mixin _$TodoViewModel on _TodoViewModel, Store {
   @override
   String toString() {
     return '''
-todoList: ${todoList}
+todoList: ${todoList},
+completedTodos: ${completedTodos},
+pendingTodos: ${pendingTodos}
     ''';
   }
 }
